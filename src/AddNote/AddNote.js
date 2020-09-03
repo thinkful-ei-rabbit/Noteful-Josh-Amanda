@@ -2,10 +2,35 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { getNotesForFolder } from '../notes-helpers';
 import ApiContext from '../ApiContext';
+import ValidateNote from './ValidateNote';
+import './AddNote.css'
 
 export default class AddNote extends React.Component {
     static contextType = ApiContext;
 
+    constructor(props) {
+        super(props)
+        this.state = {
+            newNote: {
+                value: '',
+                touched: false,
+            },
+            noteContent: {
+                value: '',
+                touched: false,
+            }
+        }
+    }
+
+    updateNewNote(newNote) {
+        this.setState({ newNote: { value: newNote, touched: true } })
+    }
+
+    updateNoteContent(noteContent) {
+        this.setState({ noteContent: { value: noteContent, touched: true } })
+    }
+
+    
 
 
     handleSubmit = (e) => {
@@ -25,13 +50,31 @@ export default class AddNote extends React.Component {
             .then(response => response.json())
             .then((newAddNote) => {
                 this.context.addNote(newAddNote)
-                this.props.history.push('/')    
+                this.props.history.push('/')
             })
             .catch((error) => {
                 console.log('catch', error);
             });
 
     }
+
+    validateNoteName() {
+        const newNoteName = this.state.newNote.value.trim();
+        console.log('validate note ran')
+        if (newNoteName === 0) {
+            return 'Your note needs a name!'
+        }
+    }
+
+    validateNoteContent() {
+        const updateNoteContent = this.state.noteContent.value.trim();
+        if (updateNoteContent === 0) {
+            return 'Your note needs a name!'
+        } else if (updateNoteContent < 3) {
+            return `2 characters don't make a note!`
+        }
+    }
+
 
 
     render() {
@@ -46,21 +89,35 @@ export default class AddNote extends React.Component {
                         className="Note__add"
                         name="newNote"
                         id="newNote"
-                    ></input>
+                        onChange={e => this.updateNewNote(e.target.value)}                                               
+                        required>
+                    </input>
+
                     <label htmlFor="newNote">Add new content!</label>
                     <input type="text"
                         className="Note__add"
                         name="noteContent"
+                        onChange={e => this.updateNoteContent(e.target.value)}                                                
+                        required
                     ></input>
-                    <select name="selectFolder">{this.context.folders.map(folder => 
-                    <option key={folder.id} value={folder.id}>{folder.name}</option>)}                        
+
+                    <select name="selectFolder">{this.context.folders.map(folder =>
+                        <option key={folder.id} value={folder.id}>{folder.name}</option>)}
                     </select>
-                    <button className='Note__add' type='submit'>
+                    <button
+                        className='Note__add'
+                        type='submit'
+                        disabled={
+                            this.validateNoteName() ||
+                            this.validateNoteContent()
+                        }>
                         <FontAwesomeIcon icon='plus' />
                         {' '}
             Add Note
             </button>
                 </form>
+                {this.state.newNote.touched && <ValidateNote message={this.validateNoteContent()} />}
+                {this.state.noteContent.touched && <ValidateNote message={this.validateNoteName()} />}
             </div>
         )
     }

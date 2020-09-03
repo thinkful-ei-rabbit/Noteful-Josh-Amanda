@@ -1,0 +1,17 @@
+.error {
+  color: red;
+}
+
+.Note__add {
+  background-color: #efefef;
+  height: 100%;
+  padding: 10px;
+  width: 100%;
+  color: #3a3939;
+  max-width: 380px;
+}
+
+button {
+  cursor: pointer;
+}
+
