@@ -7,6 +7,7 @@ import NoteListMain from '../NoteListMain/NoteListMain';
 import NotePageMain from '../NotePageMain/NotePageMain';
 import AddFolder from '../AddFolder/AddFolder';
 import AddNote from '../AddNote/AddNote';
+import ErrorBoundary from '../ErrorBoundary';
 import ApiContext from '../ApiContext';
 import './App.css';
 
@@ -101,6 +102,7 @@ class App extends Component {
 
         return (
             <ApiContext.Provider value={value}>
+                <ErrorBoundary>
                 <div className="App">
                     <nav className="App__nav">{this.renderNavRoutes()}</nav>
                     <header className="App__header">
@@ -111,6 +113,7 @@ class App extends Component {
                     </header>
                     <main className="App__main">{this.renderMainRoutes()}</main>
                 </div>
+                </ErrorBoundary>
             </ApiContext.Provider>
         );
     }

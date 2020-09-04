@@ -1,6 +1,7 @@
 import React from 'react';
 import Note from '../Note/Note';
 import './NotePageMain.css';
+import PropTypes from 'prop-types';
 import ApiContext from '../ApiContext';
 import { findNote } from '../notes-helpers';
 
@@ -39,3 +40,7 @@ export default class NotePageMain extends React.Component {
   )
 }
 }
+
+NotePageMain.propTypes ={
+  match: PropTypes.object
+};

@@ -1,6 +1,5 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getNotesForFolder } from '../notes-helpers';
 import ApiContext from '../ApiContext';
 import ValidateNote from './ValidateNote';
 import './AddNote.css'
@@ -30,12 +29,9 @@ export default class AddNote extends React.Component {
         this.setState({ noteContent: { value: noteContent, touched: true } })
     }
 
-    
-
 
     handleSubmit = (e) => {
         e.preventDefault();
-        console.log('note was submitted')
         const newNoteName = e.target.newNote.value;
         const newNoteContent = e.target.noteContent.value;
         const folderId = e.target.selectFolder.value;
@@ -45,7 +41,7 @@ export default class AddNote extends React.Component {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ name: newNoteName, content: newNoteContent, folderId })
+            body: JSON.stringify({ name: newNoteName, content: newNoteContent, modified: new Date(), folderId})
         })
             .then(response => response.json())
             .then((newAddNote) => {
@@ -61,16 +57,14 @@ export default class AddNote extends React.Component {
     validateNoteName() {
         const newNoteName = this.state.newNote.value.trim();
         console.log('validate note ran')
-        if (newNoteName === 0) {
+        if (newNoteName.length === 0) {
             return 'Your note needs a name!'
         }
     }
 
     validateNoteContent() {
         const updateNoteContent = this.state.noteContent.value.trim();
-        if (updateNoteContent === 0) {
-            return 'Your note needs a name!'
-        } else if (updateNoteContent < 3) {
+        if (updateNoteContent.length < 3) {
             return `2 characters don't make a note!`
         }
     }
@@ -78,9 +72,6 @@ export default class AddNote extends React.Component {
 
 
     render() {
-        const {
-            folders = [], notes = []
-        } = this.context
         return (
             <div>
                 <form className="Note__add" onSubmit={e => this.handleSubmit(e)}>
@@ -116,8 +107,8 @@ export default class AddNote extends React.Component {
             Add Note
             </button>
                 </form>
-                {this.state.newNote.touched && <ValidateNote message={this.validateNoteContent()} />}
-                {this.state.noteContent.touched && <ValidateNote message={this.validateNoteName()} />}
+                {this.state.newNote.touched && <ValidateNote message={this.validateNoteName()} />}
+                {this.state.noteContent.touched && <ValidateNote message={this.validateNoteContent()} />}
             </div>
         )
     }

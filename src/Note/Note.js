@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Note.css'
+import PropTypes from 'prop-types';
 import ApiContext from '../ApiContext';
 
 export default class Note extends React.Component{
@@ -63,3 +64,9 @@ render () {
   )
 }
 }
+
+Note.propTypes ={
+  id: PropTypes.string,
+  name: PropTypes.string,
+  modified: PropTypes.string
+};

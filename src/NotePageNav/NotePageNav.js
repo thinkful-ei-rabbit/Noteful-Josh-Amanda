@@ -2,9 +2,11 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import CircleButton from '../CircleButton/CircleButton'
 import './NotePageNav.css'
-import ApiContext from '../ApiContext'
+import PropTypes from 'prop-types';
 import { findNote, findFolder } from '../notes-helpers';
-import AddFolder from '../AddFolder/AddFolder'
+import ApiContext from '../ApiContext'
+
+
 
 export default class NotePageNav extends React.Component {
   static defaultProps = {
@@ -44,3 +46,6 @@ export default class NotePageNav extends React.Component {
   )
 }
 }
+NotePageNav.propTypes ={
+  match: PropTypes.object
+};

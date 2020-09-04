@@ -1,5 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import './AddFolder.css';
 import ApiContext from '../ApiContext';
 
 export default class AddFolder extends React.Component {
